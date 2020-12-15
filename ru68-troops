@@ -9,7 +9,7 @@ var chromiumVer = getChromeVersion();
 var params = "";
 if(chromiumVer >= 51){params = url.searchParams;}
 else{params = new URLSearchParams(url.search);}
-if(params.get("screen") == "ally" && params.get("mode") == "members_ally"){if($("[name='player_id']").length) {console.log($("[name='player_id']"));
+if(params.get("screen") == "ally" && params.get("mode") == "members_troops"){if($("[name='player_id']").length) {console.log($("[name='player_id']"));
 $("[name='player_id'] option:enabled").each(function(){unitoption[$(this).text()] = ($(this).val());
 });
 closedData = "<div> Р—Р°РєСЂС‹С‚С‹ РґР°РЅРЅС‹Рµ: ";
@@ -27,7 +27,7 @@ var _index = 0;
 for(var key in dict) {i++;
 var value = dict[key];
 (function(value, key){setTimeout(function(){console.log(value);
-var jqxhr = $.get( server+"game.php?screen=ally&mode=members_ally&player_id="+value, function() {})  .done(function(data) {_index++;
+var jqxhr = $.get( server+"game.php?screen=ally&mode=members_troops&player_id="+value, function() {})  .done(function(data) {_index++;
 var dataLoadProgress = "<div> Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…: " + _index + " РёР· " + Object.keys(dict).length + "</div>";
 $("#ally_content").html(dataLoadProgress);
 var el = document.createElement('html');
