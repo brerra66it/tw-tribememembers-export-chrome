@@ -1,0 +1,72 @@
+javascript:var server = "https://ru68.voyna-plemyon.ru/";
+var unitsData = [];
+var closedData = "";
+_init();
+
+function _init(){var unitoption = {};
+var url = new URL(window.location.href);
+var chromiumVer = getChromeVersion();
+var params = "";
+if(chromiumVer >= 51){params = url.searchParams;}
+else{params = new URLSearchParams(url.search);}
+if(params.get("screen") == "ally" && params.get("mode") == "members_ally"){if($("[name='player_id']").length) {console.log($("[name='player_id']"));
+$("[name='player_id'] option:enabled").each(function(){unitoption[$(this).text()] = ($(this).val());
+});
+closedData = "<div> Р—Р°РєСЂС‹С‚С‹ РґР°РЅРЅС‹Рµ: ";
+$("[name='player_id'] option:disabled").each(function(){ closedData += $(this).text() + ";";});
+closedData += "</div>";
+$("#ally_content").html("");
+delete unitoption["Р’С‹Р±РµСЂРёС‚Рµ СѓС‡Р°СЃС‚РЅРёРєР°"];
+console.log(unitoption);
+getData(unitoption);
+}else{("no units available");
+}}else{alert("go to tribal units");}}
+
+function getData(dict){var i=0;
+var _index = 0;
+for(var key in dict) {i++;
+var value = dict[key];
+(function(value, key){setTimeout(function(){console.log(value);
+var jqxhr = $.get( server+"game.php?screen=ally&mode=members_ally&player_id="+value, function() {})  .done(function(data) {_index++;
+var dataLoadProgress = "<div> Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…: " + _index + " РёР· " + Object.keys(dict).length + "</div>";
+$("#ally_content").html(dataLoadProgress);
+var el = document.createElement('html');
+el.innerHTML = data;
+el.getElementsByClassName("w100")[0].parentNode.getElementsByTagName("table")[0].rows[0].deleteCell(0);
+var thead = el.getElementsByClassName("w100")[0].parentNode.getElementsByTagName("table")[0].rows[0].innerHTML;
+thead = '<th>РРіСЂРѕРє</th><th>X</th><th>Y</th>' + thead;
+el.getElementsByClassName("w100")[0].parentNode.getElementsByTagName("table")[0].deleteRow(0);
+var tbody = el.getElementsByClassName("w100")[0].parentNode.getElementsByTagName("table")[0];
+var trowsRaw = el.getElementsByClassName("w100")[0].parentNode.getElementsByTagName("table")[0].rows;
+var trow = "";
+for(var j=0;
+ j<trowsRaw.length;
+ ++j){var coords = parseCoords(trowsRaw[j].cells[0].innerHTML);
+trowsRaw[j].deleteCell(0);
+trow = "<tr><td>" + key + "</td>" + "<td>" + coords[0] + "</td>" + "<td>" + coords[1] + "</td>" + trowsRaw[j].innerHTML + "</tr>";
+unitsData.push(trow);
+}if(Object.keys(dict).length == _index){createView(thead, unitsData);
+}})  .fail(function() {alert( "error" );
+})  .always(function() {});
+}, 300*i)})(value, key);}}
+
+function parseCoords(villageString){var out = [];
+var _index = villageString.lastIndexOf("|");
+var x = villageString.substring(_index-3, _index);
+out.push(x);
+var y = villageString.substring(_index+1, _index+4);
+out.push(y);
+return out;
+}
+
+function createView(thead, rows){$("#ally_content").html(closedData);
+var head = '<table class="vis w100"><tbody>';
+var table = head + thead;
+console.log(rows);
+for(var i=0;
+ i<rows.length;
+ ++i){table += rows[i];
+}table += "</tbody></table>";
+$("#ally_content").append(table);
+}function getChromeVersion() {         var raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
+    return raw ? parseInt(raw[2], 10) : false;}
