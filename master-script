@@ -11,9 +11,13 @@ var chromiumVer = getChromeVersion();
 var params = "";
 if(chromiumVer >= 51){params = url.searchParams;}
 else{params = new URLSearchParams(url.search);}
+
 sitter = params.get("t");
 if(sitter>0){sitter = "t="+sitter+"&";}else{sitter = "";}
-if(params.get("screen") == "ally" && params.get("mode") == "members_troops"){if($("[name='player_id']").length) {console.log($("[name='player_id']"));
+
+mode = params.get("mode");
+
+if(params.get("screen") == "ally"){if($("[name='player_id']").length) {console.log($("[name='player_id']"));
 $("[name='player_id'] option:enabled").each(function(){unitoption[$(this).text()] = ($(this).val());
 });
 closedData = "<div> Р—Р°РєСЂС‹С‚С‹ РґР°РЅРЅС‹Рµ: ";
@@ -31,7 +35,7 @@ var _index = 0;
 for(var key in dict) {i++;
 var value = dict[key];
 (function(value, key){setTimeout(function(){console.log(value);
-var jqxhr = $.get(server+"game.php?"+sitter+"screen=ally&mode=members_troops&player_id="+value, function(){}).done(function(data) {_index++;
+var jqxhr = $.get(server+"game.php?"+sitter+"screen=ally&mode="+mode+"&player_id="+value, function(){}).done(function(data) {_index++;
 var dataLoadProgress = "<div> Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…: " + _index + " РёР· " + Object.keys(dict).length + "</div>";
 $("#ally_content").html(dataLoadProgress);
 var el = document.createElement('html');
