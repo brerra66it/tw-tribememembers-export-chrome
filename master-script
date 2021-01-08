@@ -1,5 +1,4 @@
 javascript: var server = window.location.protocol + "//" + window.location.host + "/";
-//var server = "https://ru68.voyna-plemyon.ru/";
 
 var unitsData = [];
 var closedData = "";
@@ -77,7 +76,6 @@ for(var i=0;
 }table += "</tbody></table>";
 $("#ally_content").append(table);
 }
-//https://stackoverflow.com/questions/4900436/how-to-detect-the-installed-chrome-version
 function getChromeVersion(){
 	var raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
 	return raw ? parseInt(raw[2], 10) : false;
